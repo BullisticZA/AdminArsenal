@@ -25,7 +25,7 @@ Part of [AdminArsenal](../../README.md).
 | Events | System log errors in the last 24 h | 5 or more |
 | Storage | Temporary files | 2 GB or more |
 
-Trigger-start services that stop normally are **not** reported, which avoids the usual flood of false alarms.
+Trigger-start services that stop normally (exit code 0) and services that simply haven't started since boot (code 1077) are **not** reported. That avoids the usual flood of false alarms.
 
 ## 📋 Requirements
 

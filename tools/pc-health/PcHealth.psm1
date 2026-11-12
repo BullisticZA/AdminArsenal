@@ -219,11 +219,12 @@ function Get-PcHealthReport {
         }
     }
 
-    # Automatic services that are stopped AND exited with an error. Trigger-start services
-    # that stop cleanly (exit code 0) are normal and are not reported.
+    # Automatic services that are stopped AND exited with an error. Not reported:
+    #   0    - stopped cleanly (normal for trigger-start services)
+    #   1077 - ERROR_SERVICE_NEVER_STARTED: not started since boot, which is not a failure
     $failedServices = Invoke-PcSafely {
         @(Get-CimInstance -ClassName Win32_Service -Filter "StartMode='Auto' AND State<>'Running'" |
-            Where-Object { $_.ExitCode -ne 0 } | Select-Object Name, DisplayName, ExitCode)
+            Where-Object { $_.ExitCode -notin 0, 1077 } | Select-Object Name, DisplayName, ExitCode)
     }
 
     $events = Invoke-PcSafely {
