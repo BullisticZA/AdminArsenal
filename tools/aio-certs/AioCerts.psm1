@@ -37,7 +37,7 @@ function New-AioCsr {
     .SYNOPSIS
         Generates a private key and a Certificate Signing Request (CSR) using certreq.
     .EXAMPLE
-        New-AioCsr -CommonName mail.contoso.com -SubjectAltName autodiscover.contoso.com -Organization "Contoso Ltd" -Country ZA
+        New-AioCsr -CommonName mail.example.com -SubjectAltName autodiscover.example.com -Organization "Example Org" -Country ZA
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -121,7 +121,7 @@ function Complete-AioCsr {
     .SYNOPSIS
         Accepts an issued certificate (pairs it with the pending private key) and exports a PFX.
     .EXAMPLE
-        Complete-AioCsr -CertificatePath .\mail_contoso_com.cer -PfxPath .\mail.pfx
+        Complete-AioCsr -CertificatePath .\mail_example_com.cer -PfxPath .\mail.pfx
     #>
     [CmdletBinding()]
     param(

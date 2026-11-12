@@ -29,9 +29,9 @@ Import-Module .\tools\aio-certs\AioCerts.psm1
 ### 1. Create a CSR
 
 ```powershell
-New-AioCsr -CommonName mail.contoso.com `
-           -SubjectAltName autodiscover.contoso.com, owa.contoso.com `
-           -Organization "Contoso Ltd" -Locality "Cape Town" -State "Western Cape" -Country ZA `
+New-AioCsr -CommonName mail.example.com `
+           -SubjectAltName autodiscover.example.com, owa.example.com `
+           -Organization "Example Org" -Locality "Cape Town" -State "Western Cape" -Country ZA `
            -OutputPath C:\Certs
 ```
 
@@ -42,14 +42,14 @@ Send the `.csr` file to your certificate authority.
 Run this **on the same machine** that created the CSR, since that is where the private key lives:
 
 ```powershell
-Complete-AioCsr -CertificatePath C:\Certs\mail_contoso_com.cer -PfxPath C:\Certs\mail.contoso.com.pfx
+Complete-AioCsr -CertificatePath C:\Certs\mail_example_com.cer -PfxPath C:\Certs\mail.example.com.pfx
 ```
 
 ### 3. Deploy silently (e.g. from an RMM script)
 
 ```powershell
 $pw = ConvertTo-SecureString $env:PFX_PASSWORD -AsPlainText -Force
-Install-AioPfx -PfxPath C:\Temp\mail.contoso.com.pfx -PfxPassword $pw -NonExportable
+Install-AioPfx -PfxPath C:\Temp\mail.example.com.pfx -PfxPassword $pw -NonExportable
 ```
 
 > Pass the password through your RMM's secure variables, never hard-coded in the script.
