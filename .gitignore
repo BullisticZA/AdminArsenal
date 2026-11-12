@@ -1,0 +1,26 @@
+# Certificates, keys and secrets - never commit these
+*.pfx
+*.p12
+*.key
+*.pem
+*.cer
+*.crt
+*.csr
+*.rsp
+*.inf
+secrets.*
+*.secret
+
+# Output and logs
+output/
+reports/
+*.log
+*.csv
+*.xlsx
+
+# Editor / OS
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
