@@ -2,6 +2,11 @@
 
 All notable changes to AdminArsenal are listed here.
 
+## 2026-11-12 (v1.0.0)
+
+### Added
+- `AdminArsenal.psd1` module manifest: `Import-Module .\AdminArsenal.psd1` loads every tool; build script for a clean, publishable copy.
+
 ## 2026-11-12
 
 ### Added

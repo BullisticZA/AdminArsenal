@@ -36,7 +36,11 @@ More tools are on the way. Every tool is standalone: grab the one you need, read
 git clone https://github.com/BullisticZA/AdminArsenal.git
 cd AdminArsenal
 
-# Load a tool, then see what it can do
+# Load every tool at once
+Import-Module .\AdminArsenal.psd1
+Get-Command -Module AdminArsenal
+
+# Or load just the tool you need
 Import-Module .\tools\pc-health\PcHealth.psm1
 Get-PcHealthReport -HtmlPath .\pc-health.html -Open
 
@@ -51,7 +55,9 @@ New-PassForgePassphrase
 
 ```
 AdminArsenal/
+├── AdminArsenal.psd1     # Module manifest - loads every tool
 ├── assets/               # Logo and images
+├── build/                # Builds a clean, publishable copy of the module
 ├── tests/                # Unit and Windows smoke tests (run in CI)
 ├── tools/
 │   ├── aio-certs/        # Certificate lifecycle toolkit

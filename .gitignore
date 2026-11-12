@@ -24,3 +24,6 @@ reports/
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Module build output
+out/
