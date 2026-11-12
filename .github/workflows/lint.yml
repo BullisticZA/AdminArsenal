@@ -38,11 +38,13 @@ jobs:
       fail-fast: false
       matrix:
         shell: [pwsh, powershell]
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Unit tests
-        shell: ${{ matrix.shell }}
         run: |
           foreach ($t in Get-ChildItem ./tests -Filter *.Tests.ps1) {
             Write-Host "--- $($t.Name)"
@@ -51,7 +53,6 @@ jobs:
           }
 
       - name: Windows smoke test
-        shell: ${{ matrix.shell }}
         run: |
           & ./tests/Windows.Smoke.ps1
           if ($LASTEXITCODE -ne 0) { exit 1 }
