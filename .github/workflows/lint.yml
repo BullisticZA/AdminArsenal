@@ -1,4 +1,4 @@
-name: PowerShell lint
+name: CI
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   lint:
-    name: PSScriptAnalyzer
+    name: Lint
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,3 +30,28 @@ jobs:
           $results = Invoke-ScriptAnalyzer -Path ./tools -Recurse -Settings ./PSScriptAnalyzerSettings.psd1
           $results | Format-Table RuleName, Severity, ScriptName, Line, Message -AutoSize -Wrap
           if ($results | Where-Object Severity -in 'Error', 'Warning') { exit 1 }
+
+  test:
+    name: Tests (${{ matrix.shell }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shell: [pwsh, powershell]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unit tests
+        shell: ${{ matrix.shell }}
+        run: |
+          foreach ($t in Get-ChildItem ./tests -Filter *.Tests.ps1) {
+            Write-Host "--- $($t.Name)"
+            & $t.FullName
+            if ($LASTEXITCODE -ne 0) { exit 1 }
+          }
+
+      - name: Windows smoke test
+        shell: ${{ matrix.shell }}
+        run: |
+          & ./tests/Windows.Smoke.ps1
+          if ($LASTEXITCODE -ne 0) { exit 1 }
