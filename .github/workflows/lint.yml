@@ -46,13 +46,18 @@ jobs:
 
       - name: Unit tests
         run: |
+          # Each test file runs in its own process (same PowerShell edition) so its exit code is reliable.
+          $exe = (Get-Process -Id $PID).Path
+          $failed = 0
           foreach ($t in Get-ChildItem ./tests -Filter *.Tests.ps1) {
             Write-Host "--- $($t.Name)"
-            & $t.FullName
-            if ($LASTEXITCODE -ne 0) { exit 1 }
+            & $exe -NoProfile -ExecutionPolicy Bypass -File $t.FullName
+            if ($LASTEXITCODE -ne 0) { $failed++ }
           }
+          exit $failed
 
       - name: Windows smoke test
         run: |
-          & ./tests/Windows.Smoke.ps1
-          if ($LASTEXITCODE -ne 0) { exit 1 }
+          $exe = (Get-Process -Id $PID).Path
+          & $exe -NoProfile -ExecutionPolicy Bypass -File ./tests/Windows.Smoke.ps1
+          exit $LASTEXITCODE
